@@ -2,8 +2,10 @@ const studentRepository = require('../../data/repositories/studentRepository');
 const studentValidator = require('../validators/studentValidator');
 
 class StudentService {
+
     async getAllStudents(major, status) {
-        const students = await studentRepository.findAll(major, status);
+        // 🔧 แก้จาก findAll → getAll
+        const students = await studentRepository.getAll(major, status);
 
         const statistics = {
             active: students.filter(s => s.status === 'active').length,
@@ -11,7 +13,12 @@ class StudentService {
             suspended: students.filter(s => s.status === 'suspended').length,
             total: students.length,
             averageGPA: students.length
-                ? Number((students.reduce((sum, s) => sum + s.gpa, 0) / students.length).toFixed(2))
+                ? Number(
+                    (
+                        students.reduce((sum, s) => sum + Number(s.gpa || 0), 0) /
+                        students.length
+                    ).toFixed(2)
+                )
                 : 0
         };
 
@@ -20,7 +27,9 @@ class StudentService {
 
     async getStudentById(id) {
         const validId = studentValidator.validateId(id);
-        const student = await studentRepository.findById(validId);
+
+        // 🔧 findById → getById
+        const student = await studentRepository.getById(validId);
 
         if (!student) throw new Error('Student not found');
         return student;
@@ -49,24 +58,17 @@ class StudentService {
         studentValidator.validateEmail(data.email);
         studentValidator.validateMajor(data.major);
 
-        const existing = await studentRepository.findById(validId);
+        const existing = await studentRepository.getById(validId);
         if (!existing) throw new Error('Student not found');
 
-        try {
-            return await studentRepository.update(validId, data);
-        } catch (err) {
-            if (err.message.includes('UNIQUE')) {
-                throw new Error('Student code or email already exists');
-            }
-            throw err;
-        }
+        return await studentRepository.update(validId, data);
     }
 
     async updateGPA(id, gpa) {
         const validId = studentValidator.validateId(id);
         studentValidator.validateGPA(gpa);
 
-        const student = await studentRepository.findById(validId);
+        const student = await studentRepository.getById(validId);
         if (!student) throw new Error('Student not found');
 
         return await studentRepository.updateGPA(validId, gpa);
@@ -76,7 +78,7 @@ class StudentService {
         const validId = studentValidator.validateId(id);
         studentValidator.validateStatus(status);
 
-        const student = await studentRepository.findById(validId);
+        const student = await studentRepository.getById(validId);
         if (!student) throw new Error('Student not found');
 
         if (student.status === 'withdrawn') {
@@ -88,7 +90,7 @@ class StudentService {
 
     async deleteStudent(id) {
         const validId = studentValidator.validateId(id);
-        const student = await studentRepository.findById(validId);
+        const student = await studentRepository.getById(validId);
 
         if (!student) throw new Error('Student not found');
         if (student.status === 'active') {
