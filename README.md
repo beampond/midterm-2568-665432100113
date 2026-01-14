@@ -21,14 +21,6 @@
 
 # 🎓 Student Management System  
 ### Layered Architecture (3-Tier)
-
----
-
-## 📌 Project Information
-- **Student Name:** ____________________
-- **Student ID:** 66543210011-3
-- **Course:** ENGSE207 Software Architecture
-
 ---
 
 ## 🏗 Architecture Style
@@ -36,28 +28,6 @@
 
 แยกโครงสร้างระบบออกเป็น 3 ชั้นหลัก เพื่อความชัดเจนในการพัฒนา ดูแลรักษา และขยายระบบในอนาคต
 
----
-
-## 📂 Project Structure
-
-# 🎓 Student Management System  
-### Layered Architecture (3-Tier)
-
----
-
-## 📌 Project Information
-- **Student Name:** ____________________
-- **Student ID:** 66543210011-3
-- **Course:** ENGSE207 Software Architecture
-
----
-
-## 🏗 Architecture Style
-**Layered Architecture (3-Tier)**
-
-แยกโครงสร้างระบบออกเป็น 3 ชั้นหลัก เพื่อความชัดเจนในการพัฒนา ดูแลรักษา และขยายระบบในอนาคต
-
----
 
 ## 📂 Project Structure
 
